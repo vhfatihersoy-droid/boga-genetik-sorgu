@@ -667,6 +667,363 @@
       .field.full { grid-column: auto; }
       .user-row { grid-template-columns: 1fr auto; }
     }
+
+    /* =======================================================================
+       RESMÎ SOY AĞACI (PEDİGRİ) SERTİFİKA VE YATAY AĞAÇ ŞEMASI
+       ======================================================================= */
+    .ped-picker {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .ped-cert {
+      background: #ffffff;
+      border: 1px solid #c7d8d2;
+      border-top: 5px solid var(--nav-bg);
+      border-radius: 14px;
+      box-shadow: 0 12px 32px rgba(15, 47, 52, 0.08);
+      overflow: hidden;
+    }
+
+    .ped-masthead {
+      background: linear-gradient(135deg, #f7fbfa 0%, #eef6f3 100%);
+      border-bottom: 1px solid #d5e4de;
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .ped-kicker {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .ped-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--nav-bg);
+      margin: 0 0 6px;
+      letter-spacing: -0.2px;
+    }
+
+    .ped-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      font-size: 12px;
+      color: #465d58;
+    }
+
+    .ped-metrics {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .ped-metric {
+      background: #ffffff;
+      border: 1px solid #d5e4de;
+      border-radius: 10px;
+      padding: 8px 12px;
+      min-width: 86px;
+      text-align: center;
+    }
+
+    .ped-metric small {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: 0.4px;
+    }
+
+    .ped-metric b {
+      display: block;
+      font-size: 14px;
+      margin-top: 2px;
+      color: var(--nav-bg);
+    }
+
+    .ped-metric.m-a2 b { color: var(--ok); }
+    .ped-metric.m-bb b { color: var(--info); }
+
+    .ped-actions-bar {
+      background: #fcfefd;
+      border-bottom: 1px solid var(--line-soft);
+      padding: 10px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .ped-alerts {
+      padding: 14px 24px 0;
+    }
+
+    .ped-stage {
+      padding: 24px;
+      overflow-x: auto;
+      background:
+        radial-gradient(circle at 20px 20px, #e9f1ee 1px, transparent 1px) 0 0 / 24px 24px,
+        #fbfdfc;
+    }
+
+    .ped-gen-headers {
+      display: flex;
+      gap: 28px;
+      margin-bottom: 14px;
+      min-width: 980px;
+    }
+
+    .ped-gen-col {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      color: var(--muted);
+      padding-bottom: 6px;
+      border-bottom: 2px solid #dce8e4;
+    }
+
+    .ped-gen-col.g0 { width: 242px; flex-shrink: 0; }
+    .ped-gen-col.g1 { width: 242px; flex-shrink: 0; }
+    .ped-gen-col.g2 { width: 232px; flex-shrink: 0; }
+    .ped-gen-col.g3 { width: 215px; flex-shrink: 0; }
+
+    /* Yatay ortogonal soy ağacı konektörleri */
+    .ped-branch {
+      display: flex;
+      align-items: center;
+    }
+
+    .ped-children {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 12px;
+      position: relative;
+      padding-left: 28px;
+    }
+
+    .ped-children::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 14px;
+      height: 2px;
+      background: #8faea6;
+      transform: translateY(-50%);
+    }
+
+    .ped-child {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .ped-child::before {
+      content: "";
+      position: absolute;
+      left: -14px;
+      top: 50%;
+      width: 14px;
+      height: 2px;
+      background: #8faea6;
+      transform: translateY(-50%);
+    }
+
+    .ped-child::after {
+      content: "";
+      position: absolute;
+      left: -14px;
+      width: 2px;
+      background: #8faea6;
+      top: -7px;
+      bottom: -7px;
+    }
+
+    .ped-child:first-child::after { top: 50%; bottom: -7px; }
+    .ped-child:last-child::after { top: -7px; bottom: 50%; }
+    .ped-child:only-child::after { display: none; }
+
+    .ped-card {
+      width: 242px;
+      flex-shrink: 0;
+      background: #ffffff;
+      border: 1px solid #ceddd8;
+      border-left: 4px solid var(--nav-bg);
+      border-radius: 10px;
+      padding: 11px 12px;
+      box-shadow: 0 3px 10px rgba(15, 47, 52, 0.05);
+      transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+    }
+
+    .ped-card.g2 { width: 232px; padding: 9px 11px; }
+    .ped-card.g3 { width: 215px; padding: 8px 10px; }
+
+    .ped-card.line-paternal { border-left-color: #16606b; }
+    .ped-card.line-maternal { border-left-color: #9e4739; }
+
+    .ped-card.is-dam-empty {
+      border-style: dashed;
+      border-left-style: solid;
+      background: #fdf9f8;
+      border-color: #e4c9c3;
+      border-left-color: #b46a5c;
+    }
+
+    .ped-card.is-unknown {
+      border-style: dashed;
+      border-left-style: solid;
+      background: #f8faf9;
+    }
+
+    .ped-card.is-carrier {
+      border-color: #e68a84;
+      border-left-color: #b42318;
+      background: #fff9f9;
+      box-shadow: 0 4px 14px rgba(180, 35, 24, 0.12);
+    }
+
+    .ped-card.is-common {
+      border-color: #e0a83b;
+      box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.22);
+    }
+
+    .ped-card.is-clickable { cursor: pointer; }
+    .ped-card.is-clickable:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 7px 18px rgba(15, 47, 52, 0.12);
+      border-color: var(--accent);
+    }
+
+    .ped-role-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .ped-role {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+    }
+
+    .ped-card.line-paternal .ped-role { color: #16606b; }
+    .ped-card.line-maternal .ped-role { color: #9e4739; }
+
+    .ped-name {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 3px;
+      word-break: break-word;
+    }
+
+    .ped-card.g3 .ped-name { font-size: 12px; }
+
+    .ped-id-line {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 5px;
+      word-break: break-all;
+    }
+
+    .ped-mini-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+
+    .ped-stat-pill {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: #eff5f3;
+      color: #34524c;
+    }
+
+    .ped-flag {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 99px;
+      white-space: nowrap;
+    }
+
+    .ped-flag.f-common { background: #fef3c7; color: #92400e; border: 1px solid #f59e0b; }
+    .ped-flag.f-carrier { background: #fee2e2; color: #b42318; border: 1px solid #f87171; }
+
+    .ped-footer {
+      border-top: 1px solid var(--line);
+      background: #f8fbfa;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .ped-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .ped-legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .ped-swatch {
+      width: 11px;
+      height: 11px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+    @media (max-width: 900px) {
+      .ped-picker { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      @page { size: landscape; margin: 10mm; }
+      body { background: #ffffff !important; }
+      .side, .top, .head, .ped-picker-panel, .ped-actions-bar, .toast, .modal { display: none !important; }
+      .layout { display: block !important; }
+      .content { max-width: none !important; padding: 0 !important; }
+      .page { display: none !important; }
+      #page-pedigree { display: block !important; }
+      .ped-cert { box-shadow: none !important; border: 1px solid #888 !important; }
+      .ped-stage { background: #ffffff !important; overflow: visible !important; padding: 12px !important; }
+      .ped-card { box-shadow: none !important; break-inside: avoid; }
+    }
   </style>
 </head>
 <body>
@@ -687,6 +1044,10 @@
         <button data-page="bulls">
           <span class="nav-label">♉ Boğalar</span>
           <span class="nav-badge" id="navBullCount">0</span>
+        </button>
+        <button data-page="pedigree">
+          <span class="nav-label">🌿 Soy Ağacı (Pedigri)</span>
+          <span class="nav-badge" id="navPedCount">0</span>
         </button>
         <button data-page="aiss">
           <span class="nav-label">🧬 AISS Tarama</span>
@@ -814,10 +1175,13 @@
                 <input class="input" id="qSearch" placeholder="Boğa adı, küpe, NAAB, kusur, kod (örn. MW, CD, TL) veya not ara…">
                 <select id="breedFilter"><option value="">Tüm ırklar</option></select>
                 <select id="codeFilter">
-                  <option value="">Tüm kod kapsamları</option>
+                  <option value="">Tüm kayıtlar</option>
+                  <option value="has-pedigree">Pedigrisi bulunanlar (AISS)</option>
                   <option value="has-codes">Genetik kodu bulunanlar</option>
                   <option value="no-codes">Genetik kodu olmayanlar</option>
                   <option value="attention">Uyarı / inceleme bayraklılar</option>
+                  <option value="group-haygem">Yalnız HAYGEM 2026</option>
+                  <option value="group-adv">Yalnız İleri Eşleştirme</option>
                 </select>
                 <select id="pageSizeSelect">
                   <option value="25">25 / sayfa</option>
@@ -850,6 +1214,33 @@
               <div class="row" id="pagerControls"></div>
             </div>
           </div>
+        </section>
+
+        <!-- SOY AĞACI (RESMÎ PEDİGRİ) -->
+        <section class="page" id="page-pedigree">
+          <div class="head">
+            <div>
+              <div class="kicker">Resmî Soy Ağacı ve Genetik İzleme</div>
+              <h1>Boğa Pedigrisi (3–4 Kuşak)</h1>
+              <p>NAAB AISS resmî soy kayıtlarından oluşturulan yatay soy ağacı, ata taşıyıcılık taraması ve ortak ata tespiti.</p>
+            </div>
+          </div>
+
+          <div class="panel ped-picker-panel">
+            <div class="pad">
+              <div class="pills" id="pedQuickPills"></div>
+              <div class="ped-picker">
+                <input class="input" id="pedSearchInput" placeholder="Pedigrisini görmek istediğiniz boğa adı, küpe veya NAAB ara…">
+                <select id="pedBullSelect"></select>
+                <div class="row">
+                  <button class="btn" id="pedBackBtn" data-action="ped-back" style="display:none">← Önceki</button>
+                  <button class="btn primary" data-action="ped-print">🖨 Yazdır / PDF</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="pedCertificateHost"></div>
         </section>
 
         <!-- AISS TARAMA -->
@@ -1107,7 +1498,7 @@
       'use strict';
 
       const LEGACY_KEY = 'haygem_boga_genetik_v1';
-      const STATIC_KEY = 'haygem_boga_genetik_static_v2';
+      const STATIC_KEY = 'haygem_boga_genetik_static_v3';
       let storageMode = 'server'; // 'server' (Cloudflare D1 / local_server) veya 'static' (GitHub Pages)
       const STATUS_ORDER = [
         'Taşıyıcı',
@@ -1202,18 +1593,23 @@
       };
 
       // Uygulama durumu
-      let state = { bulls: [], sources: [], users: [], audit: [], legacyMigrationDone: false };
+      let state = { bulls: [], pedigreeIndex: {}, sources: [], users: [], audit: [], legacyMigrationDone: false };
       let revision = 0;
       let updatedAt = '';
       let currentUser = null;
       let saveQueue = Promise.resolve(true);
 
-      // Tablo ve filtre durumu
+      // Tablo, filtre ve pedigri durumu
       let activeStatusPill = '';
       let sortField = 'name';
       let sortDir = 1;
       let currentPage = 1;
       let lastAissMatches = [];
+      let lastAissById = new Map();
+      let selectedPedUid = '';
+      let selectedAncestorId = '';
+      let pedHistory = [];
+      let pedQuickFilter = 'with-ped';
 
       const appLayout = document.getElementById('appLayout');
       const gate = document.createElement('div');
@@ -1264,6 +1660,9 @@
       }
 
       function ensureUids() {
+        if (!state.pedigreeIndex || typeof state.pedigreeIndex !== 'object') {
+          state.pedigreeIndex = {};
+        }
         const seen = new Set();
         state.bulls.forEach((b, i) => {
           b.breed = normalizeBreed(b.breed);
@@ -1408,6 +1807,7 @@
       function saveState() {
         const payload = {
           bulls: state.bulls,
+          pedigreeIndex: state.pedigreeIndex || {},
           sources: state.sources,
           users: state.users,
           audit: state.audit,
@@ -1568,6 +1968,7 @@
         document.getElementById('whoName').textContent = currentUser?.name || currentUser?.email || 'Kullanıcı';
         document.getElementById('whoRole').textContent = currentUser?.role || '';
         document.getElementById('navBullCount').textContent = String(state.bulls.length);
+        document.getElementById('navPedCount').textContent = String(state.bulls.filter((b) => Boolean(b.pedigree)).length);
         document.getElementById('revInfo').textContent = `Sürüm #${revision}${updatedAt ? ' · ' + formatDate(updatedAt) : ''}`;
 
         // Rol görünürlüğü
@@ -1582,6 +1983,7 @@
 
         renderOverview();
         renderBulls();
+        renderPedigreeView();
         renderSources();
         renderDictionary();
         renderAudit();
@@ -1699,6 +2101,7 @@
                   <td>${statusBadge(b.status)}</td>
                   <td>
                     <button class="link-btn" data-action="detail-bull" data-uid="${esc(b.uid)}">Detay</button>
+                    ${b.pedigree ? `<button class="link-btn" data-action="open-pedigree" data-uid="${esc(b.uid)}">🌿 Pedigri</button>` : ''}
                     <button class="link-btn" data-action="query-bull" data-uid="${esc(b.uid)}">Sorgula</button>
                   </td>
                 </tr>`
@@ -1719,11 +2122,14 @@
             return false;
           }
           if (breed && b.breed !== breed) return false;
+          if (codeMode === 'has-pedigree' && !b.pedigree) return false;
           if (codeMode === 'has-codes' && !b.codes && !b.defect) return false;
           if (codeMode === 'no-codes' && (b.codes || b.defect)) return false;
           if (codeMode === 'attention' && !b.attention) return false;
+          if (codeMode === 'group-haygem' && b.group !== 'HAYGEM 2026') return false;
+          if (codeMode === 'group-adv' && b.group !== 'İleri Eşleştirme') return false;
           if (q) {
-            const hay = [b.name, b.ear, b.naab, b.breed, b.defect, b.codes, b.source, b.note, b.attention]
+            const hay = [b.name, b.ear, b.naab, b.breed, b.defect, b.codes, b.source, b.note, b.attention, b.importer, b.country]
               .join(' ')
               .toLocaleLowerCase('tr');
             if (!hay.includes(q)) return false;
@@ -1803,6 +2209,7 @@
                     <td>${ev ? `<a class="link-btn" href="${esc(ev)}" target="_blank" rel="noopener noreferrer">Kanıt ↗</a>` : '<span style="color:var(--muted)">—</span>'}</td>
                     <td style="white-space:nowrap">
                       <button class="link-btn" data-action="detail-bull" data-uid="${esc(b.uid)}">Detay</button>
+                      <button class="link-btn" data-action="open-pedigree" data-uid="${esc(b.uid)}" title="Resmî 3–4 kuşak soy ağacını aç">${b.pedigree ? '🌿 Pedigri' : 'Pedigri'}</button>
                       <button class="link-btn" data-action="query-bull" data-uid="${esc(b.uid)}">Sorgula</button>
                       ${canWrite() ? `<button class="link-btn" data-action="edit-bull" data-uid="${esc(b.uid)}">Düzenle</button>` : ''}
                       ${canWrite() ? `<button class="link-btn danger" data-action="delete-bull" data-uid="${esc(b.uid)}">Sil</button>` : ''}
@@ -1824,6 +2231,576 @@
             <span>Sayfa ${currentPage} / ${totalPages}</span>
             <button class="btn sm" data-action="page-next" ${currentPage >= totalPages ? 'disabled' : ''}>Sonraki →</button>`;
         }
+      }
+
+      // -----------------------------------------------------------------------
+      // RESMÎ SOY AĞACI (PEDİGRİ) MOTORU & SERTİFİKA GÖRÜNÜMÜ
+      // -----------------------------------------------------------------------
+      function getAncestor(cid) {
+        if (!cid) return null;
+        return (state.pedigreeIndex && state.pedigreeIndex[cid]) || null;
+      }
+
+      function formatDobTr(dob) {
+        if (!dob) return '—';
+        const m = String(dob).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        return m ? `${m[3]}.${m[2]}.${m[1]}` : dob;
+      }
+
+      function getCarrierCodesFromText(text) {
+        return parseGeneticTokens(text)
+          .filter((t) => t.kind === 'carrier')
+          .map((t) => t.code);
+      }
+
+      function collectBranchAncestors(startId, maxDepth = 3) {
+        const ids = new Set();
+        const stack = startId ? [{ id: startId, d: 1 }] : [];
+        while (stack.length) {
+          const { id, d } = stack.pop();
+          if (!id || ids.has(id) || d > maxDepth) continue;
+          ids.add(id);
+          const rec = getAncestor(id);
+          if (rec && d < maxDepth) {
+            if (rec.sireId) stack.push({ id: rec.sireId, d: d + 1 });
+            if (rec.mgsId) stack.push({ id: rec.mgsId, d: d + 1 });
+          }
+        }
+        return ids;
+      }
+
+      function analyzePedigreeEntity(entity) {
+        const sireId = entity.sireId || entity.pedigree?.sireId || '';
+        const mgsId = entity.mgsId || entity.pedigree?.mgsId || '';
+        const sire = getAncestor(sireId);
+        const mgs = getAncestor(mgsId);
+
+        const pgsId = sire?.sireId || '';
+        const sireMgsId = sire?.mgsId || '';
+        const pgs = getAncestor(pgsId);
+        const sireMgs = getAncestor(sireMgsId);
+
+        const mggsId = mgs?.sireId || '';
+        const mgsMgsId = mgs?.mgsId || '';
+        const mggs = getAncestor(mggsId);
+        const mgsMgs = getAncestor(mgsMgsId);
+
+        const ppgsId = pgs?.sireId || '';
+        const pgsMgsId = pgs?.mgsId || '';
+        const ppgs = getAncestor(ppgsId);
+        const pgsMgs = getAncestor(pgsMgsId);
+
+        const paternalSet = collectBranchAncestors(sireId, 4);
+        const maternalSet = collectBranchAncestors(mgsId, 4);
+        const commonIds = new Set([...paternalSet].filter((id) => maternalSet.has(id)));
+
+        const carrierAncestors = [];
+        const checkNodes = [
+          { role: 'Baba (Sire)', id: sireId, rec: sire },
+          { role: 'Baba Babası (PGS)', id: pgsId, rec: pgs },
+          { role: 'Babanın Ana Babası (Sire MGS)', id: sireMgsId, rec: sireMgs },
+          { role: 'Ana Babası (MGS)', id: mgsId, rec: mgs },
+          { role: 'Ana Babasının Babası (MGGS)', id: mggsId, rec: mggs },
+          { role: 'Baba Hattı 3. Kuşak (PPGS)', id: ppgsId, rec: ppgs },
+        ];
+        const seenCarriers = new Set();
+        for (const item of checkNodes) {
+          if (!item.rec) continue;
+          const bad = getCarrierCodesFromText(item.rec.codes);
+          if (bad.length && !seenCarriers.has(`${item.role}:${item.id}`)) {
+            seenCarriers.add(`${item.role}:${item.id}`);
+            carrierAncestors.push({ role: item.role, id: item.id, name: item.rec.name, codes: bad });
+          }
+        }
+
+        const commonList = [...commonIds].map((id) => {
+          const rec = getAncestor(id);
+          return { id, name: rec?.name || id };
+        });
+
+        return {
+          sireId, sire,
+          mgsId, mgs,
+          pgsId, pgs,
+          sireMgsId, sireMgs,
+          mggsId, mggs,
+          mgsMgsId, mgsMgs,
+          ppgsId, ppgs,
+          pgsMgsId, pgsMgs,
+          commonIds,
+          commonList,
+          carrierAncestors,
+        };
+      }
+
+      function renderPedCard({ role, genCls = '', lineCls = '', name, id, naab, dob, tpi, nm, beta, kappa, codes, defect, commonIds, clickableId = '', isDamEmpty = false, damEditUid = '' }) {
+        const carrierCodes = getCarrierCodesFromText([defect, codes].filter(Boolean).join(' '));
+        const isCommon = Boolean(id && commonIds && commonIds.has(id));
+        const isUnknown = !name && !isDamEmpty;
+        const classes = [
+          'ped-card',
+          genCls,
+          lineCls,
+          isDamEmpty ? 'is-dam-empty' : '',
+          isUnknown ? 'is-unknown' : '',
+          carrierCodes.length ? 'is-carrier' : '',
+          isCommon ? 'is-common' : '',
+          clickableId ? 'is-clickable' : '',
+        ]
+          .filter(Boolean)
+          .join(' ');
+
+        const clickAttr = clickableId
+          ? ` data-action="ped-ancestor" data-cid="${esc(clickableId)}" title="Bu atanın soy ağacını incelemek için tıklayın"`
+          : '';
+
+        const stats = [];
+        if (dob) stats.push(formatDobTr(dob));
+        if (tpi) stats.push(`TPI ${tpi}`);
+        if (nm) stats.push(`NM$ ${nm}`);
+        if (beta) stats.push(`β:${beta}`);
+        if (kappa) stats.push(`κ:${kappa}`);
+
+        return `
+          <div class="${classes}"${clickAttr}>
+            <div class="ped-role-row">
+              <span class="ped-role">${esc(role)}</span>
+              <div class="row" style="gap:4px">
+                ${carrierCodes.length ? `<span class="ped-flag f-carrier">⚠ ${esc(carrierCodes.join(','))}</span>` : ''}
+                ${isCommon ? `<span class="ped-flag f-common">🔗 Ortak Ata</span>` : ''}
+              </div>
+            </div>
+            ${
+              isDamEmpty
+                ? `<div class="ped-name" style="color:#8b5a50;font-weight:700">Ana (Dam) kaydı girilmemiş</div>
+                   <div style="font-size:11px;color:var(--muted);line-height:1.45;margin-bottom:6px">AISS boğa veri setinde dişi kayıtları bulunmaz; harici ırk birliğinden eklenebilir.</div>
+                   ${canWrite() && damEditUid ? `<button class="btn sm" data-action="ped-edit-dam" data-uid="${esc(damEditUid)}">✎ Ana bilgisi ekle</button>` : ''}`
+                : `<div class="ped-name">${esc(name || (id ? 'AISS dışı ata kaydı' : 'Kayıt yok'))}</div>
+                   <div class="ped-id-line">${esc(id || '—')}${naab ? ` · ${esc(naab)}` : ''}</div>
+                   ${stats.length ? `<div class="ped-mini-stats">${stats.map((s) => `<span class="ped-stat-pill">${esc(s)}</span>`).join('')}</div>` : ''}
+                   ${codes || defect ? renderCodeChips({ codes: codes || '', defect: defect || '' }, 8) : ''}`
+            }
+          </div>`;
+      }
+
+      function renderPedigreeCertificate(subject, isAncestorView = false) {
+        const info = analyzePedigreeEntity(subject);
+        const hasPed = Boolean(info.sireId || info.mgsId || subject.pedigree?.damName);
+        const primaryId = subject.pedigree?.fullId || subject.fullId || subject.ear || subject.naab || '';
+        const regClean = String(subject.ear || subject.naab || subject.id || '').replace(/\s+/g, '');
+
+        const naabUrl = subject.pedigree?.fullId || subject.fullId
+          ? `https://www.naab-css.org/genomic-bull-database/${encodeURIComponent(subject.pedigree?.fullId || subject.fullId)}`
+          : 'https://www.naab-css.org/database-files';
+
+        const metricTiles = [
+          { label: 'Doğum', val: formatDobTr(subject.dob), cls: '' },
+          { label: 'Beta-Kazein', val: subject.betaCasein || subject.beta || '—', cls: (subject.betaCasein || subject.beta) === 'A2A2' ? 'm-a2' : '' },
+          { label: 'Kappa-Kazein', val: subject.kappaCasein || subject.kappa || '—', cls: (subject.kappaCasein || subject.kappa) === 'BB' ? 'm-bb' : '' },
+          { label: 'TPI / PTI', val: subject.tpi || '—', cls: '' },
+          { label: 'Net Merit', val: subject.nm ? `$${subject.nm}` : '—', cls: '' },
+        ];
+
+        // Kuşak 3 kartları (Baba Hattı üst + Ana Hattı alt)
+        const pgsGen3 =
+          info.ppgsId || info.pgsMgsId
+            ? `<div class="ped-children">
+                <div class="ped-child">${renderPedCard({
+                  role: 'Baba Babasının Babası · PPGS',
+                  genCls: 'g3',
+                  lineCls: 'line-paternal',
+                  name: info.ppgs?.name,
+                  id: info.ppgsId,
+                  naab: info.ppgs?.naab,
+                  dob: info.ppgs?.dob,
+                  codes: info.ppgs?.codes,
+                  commonIds: info.commonIds,
+                  clickableId: info.ppgs ? info.ppgsId : '',
+                })}</div>
+                <div class="ped-child">${renderPedCard({
+                  role: 'PGS Ana Babası · PGS-MGS',
+                  genCls: 'g3',
+                  lineCls: 'line-paternal',
+                  name: info.pgsMgs?.name,
+                  id: info.pgsMgsId,
+                  naab: info.pgsMgs?.naab,
+                  dob: info.pgsMgs?.dob,
+                  codes: info.pgsMgs?.codes,
+                  commonIds: info.commonIds,
+                  clickableId: info.pgsMgs ? info.pgsMgsId : '',
+                })}</div>
+              </div>`
+            : '';
+
+        const mgsGen3 =
+          info.mggsId || info.mgsMgsId
+            ? `<div class="ped-children">
+                <div class="ped-child">${renderPedCard({
+                  role: 'Ana Babasının Babası · MGGS',
+                  genCls: 'g3',
+                  lineCls: 'line-maternal',
+                  name: info.mggs?.name,
+                  id: info.mggsId,
+                  naab: info.mggs?.naab,
+                  dob: info.mggs?.dob,
+                  codes: info.mggs?.codes,
+                  commonIds: info.commonIds,
+                  clickableId: info.mggs ? info.mggsId : '',
+                })}</div>
+                <div class="ped-child">${renderPedCard({
+                  role: 'MGS Ana Babası · MGS-MGS',
+                  genCls: 'g3',
+                  lineCls: 'line-maternal',
+                  name: info.mgsMgs?.name,
+                  id: info.mgsMgsId,
+                  naab: info.mgsMgs?.naab,
+                  dob: info.mgsMgs?.dob,
+                  codes: info.mgsMgs?.codes,
+                  commonIds: info.commonIds,
+                  clickableId: info.mgsMgs ? info.mgsMgsId : '',
+                })}</div>
+              </div>`
+            : '';
+
+        const treeHtml = hasPed
+          ? `<div class="ped-gen-headers">
+              <div class="ped-gen-col g0">Kuşak 0 · Boğa</div>
+              <div class="ped-gen-col g1">Kuşak 1 · Ebeveynler</div>
+              <div class="ped-gen-col g2">Kuşak 2 · Büyük Ebeveynler</div>
+              <div class="ped-gen-col g3">Kuşak 3 · Büyük Büyükbabalar</div>
+            </div>
+            <div class="ped-branch" style="min-width:980px">
+              ${renderPedCard({
+                role: isAncestorView ? 'İncelenen Ata (AISS)' : 'Boğa · Subject',
+                name: subject.pedigree?.officialName || subject.name,
+                id: subject.ear || subject.id || subject.pedigree?.aissId,
+                naab: subject.naab,
+                dob: subject.dob,
+                beta: subject.betaCasein || subject.beta,
+                kappa: subject.kappaCasein || subject.kappa,
+                codes: subject.codes,
+                defect: subject.defect,
+                commonIds: info.commonIds,
+              })}
+              <div class="ped-children">
+                <div class="ped-child">
+                  <div class="ped-branch">
+                    ${renderPedCard({
+                      role: 'Baba · Sire (Kuşak 1)',
+                      lineCls: 'line-paternal',
+                      name: info.sire?.name,
+                      id: info.sireId,
+                      naab: info.sire?.naab,
+                      dob: info.sire?.dob,
+                      tpi: info.sire?.tpi,
+                      nm: info.sire?.nm,
+                      beta: info.sire?.beta,
+                      kappa: info.sire?.kappa,
+                      codes: info.sire?.codes,
+                      commonIds: info.commonIds,
+                      clickableId: info.sire ? info.sireId : '',
+                    })}
+                    <div class="ped-children">
+                      <div class="ped-child">
+                        <div class="ped-branch">
+                          ${renderPedCard({
+                            role: 'Baba Babası · PGS',
+                            genCls: 'g2',
+                            lineCls: 'line-paternal',
+                            name: info.pgs?.name,
+                            id: info.pgsId,
+                            naab: info.pgs?.naab,
+                            dob: info.pgs?.dob,
+                            tpi: info.pgs?.tpi,
+                            nm: info.pgs?.nm,
+                            codes: info.pgs?.codes,
+                            commonIds: info.commonIds,
+                            clickableId: info.pgs ? info.pgsId : '',
+                          })}
+                          ${pgsGen3}
+                        </div>
+                      </div>
+                      <div class="ped-child">
+                        ${renderPedCard({
+                          role: 'Babanın Ana Babası · Sire MGS',
+                          genCls: 'g2',
+                          lineCls: 'line-paternal',
+                          name: info.sireMgs?.name,
+                          id: info.sireMgsId,
+                          naab: info.sireMgs?.naab,
+                          dob: info.sireMgs?.dob,
+                          codes: info.sireMgs?.codes,
+                          commonIds: info.commonIds,
+                          clickableId: info.sireMgs ? info.sireMgsId : '',
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="ped-child">
+                  <div class="ped-branch">
+                    ${renderPedCard({
+                      role: 'Ana · Dam (Kuşak 1)',
+                      lineCls: 'line-maternal',
+                      name: subject.pedigree?.damName || '',
+                      id: subject.pedigree?.damId || '',
+                      isDamEmpty: !subject.pedigree?.damName && !subject.pedigree?.damId,
+                      damEditUid: isAncestorView ? '' : subject.uid,
+                    })}
+                    <div class="ped-children">
+                      <div class="ped-child">
+                        <div class="ped-branch">
+                          ${renderPedCard({
+                            role: 'Ana Babası · MGS',
+                            genCls: 'g2',
+                            lineCls: 'line-maternal',
+                            name: info.mgs?.name,
+                            id: info.mgsId,
+                            naab: info.mgs?.naab,
+                            dob: info.mgs?.dob,
+                            tpi: info.mgs?.tpi,
+                            nm: info.mgs?.nm,
+                            codes: info.mgs?.codes,
+                            commonIds: info.commonIds,
+                            clickableId: info.mgs ? info.mgsId : '',
+                          })}
+                          ${mgsGen3}
+                        </div>
+                      </div>
+                      <div class="ped-child">
+                        ${renderPedCard({
+                          role: 'Ana Anası · MGD',
+                          genCls: 'g2',
+                          lineCls: 'line-maternal',
+                          isDamEmpty: true,
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>`
+          : `<div class="alert warn" style="margin:0">
+              <b>AISS pedigri kaydı bulunmadı:</b> Bu boğa NAAB Ağustos 2026 AISS veri setinde yer almadığından (ör. Avrupa/etçi ırk veya arşiv boğa) otomatik soy ağacı oluşturulamadı.
+              Aşağıdaki resmî uluslararası kaynak bağlantılarından pedigrisini doğrudan açabilir veya <b>Ana / Pedigri Düzenle</b> ile manuel kaydedebilirsiniz.
+            </div>`;
+
+        const alertsHtml = [
+          info.carrierAncestors.length
+            ? `<div class="alert danger" style="margin-bottom:10px">
+                <b>⚠ Soy Hattında Taşıyıcı Ata Tespiti:</b>
+                ${info.carrierAncestors
+                  .map((a) => `${esc(a.role)}: <b>${esc(a.name)}</b> (<span class="mono">${esc(a.codes.join(', '))}</span>)`)
+                  .join(' · ')}
+              </div>`
+            : '',
+          info.commonList.length
+            ? `<div class="alert warn" style="margin-bottom:10px">
+                <b>🔗 Ortak Ata / Akrabalı Yetiştirme (Linebreeding) Tespiti:</b>
+                Baba ve ana hattında ortak ata bulundu → ${info.commonList
+                  .map((c) => `<b>${esc(c.name)}</b> (<span class="mono">${esc(c.id)}</span>)`)
+                  .join(', ')}. Şemada altın çerçeve ile işaretlenmiştir.
+              </div>`
+            : '',
+        ].join('');
+
+        return `
+          <div class="ped-cert">
+            <div class="ped-masthead">
+              <div>
+                <div class="ped-kicker">HAYGEM · Resmî Soy Ağacı ve Genetik Kusur Pedigrisi</div>
+                <h2 class="ped-title">${esc(subject.pedigree?.officialName || subject.name)}</h2>
+                <div class="ped-meta-row">
+                  <span><b>Irk:</b> ${esc(subject.breed || subject.breedCode || '—')}</span>
+                  <span><b>Kimlik:</b> <span class="mono">${esc(subject.ear || subject.id || primaryId || '—')}</span></span>
+                  <span><b>NAAB:</b> <span class="mono">${esc(subject.naab || '—')}</span></span>
+                  ${subject.country ? `<span><b>Ülke:</b> ${esc(subject.country)}</span>` : ''}
+                  ${subject.importer ? `<span><b>İthalatçı:</b> ${esc(subject.importer)}</span>` : ''}
+                  ${subject.doses ? `<span><b>Toplam Doz:</b> ${Number(subject.doses).toLocaleString('tr-TR')}</span>` : ''}
+                  ${subject.status ? statusBadge(subject.status) : ''}
+                </div>
+              </div>
+              <div class="ped-metrics">
+                ${metricTiles
+                  .map(
+                    (m) => `<div class="ped-metric ${m.cls}"><small>${esc(m.label)}</small><b>${esc(m.val)}</b></div>`
+                  )
+                  .join('')}
+              </div>
+            </div>
+
+            <div class="ped-actions-bar">
+              <div class="row">
+                ${!isAncestorView && canWrite() ? `<button class="btn sm" data-action="ped-edit-dam" data-uid="${esc(subject.uid)}">✎ Ana (Dam) / Pedigri Düzenle</button>` : ''}
+                ${!isAncestorView ? `<button class="btn sm" data-action="detail-bull" data-uid="${esc(subject.uid)}">📋 Boğa Detayı</button>` : ''}
+              </div>
+              <div class="row">
+                <a class="btn sm" href="${esc(naabUrl)}" target="_blank" rel="noopener noreferrer">NAAB DB ↗</a>
+                <a class="btn sm" href="https://webconnect.uscdcb.com/#/queries" target="_blank" rel="noopener noreferrer">CDCB WebConnect ↗</a>
+                <a class="btn sm" href="https://www.holsteinusa.com/" target="_blank" rel="noopener noreferrer">Holstein USA ↗</a>
+                <a class="btn sm" href="https://lactanetgen.ca/" target="_blank" rel="noopener noreferrer">Lactanet ↗</a>
+                <a class="btn sm" href="https://www.anafi.it/en/tori-interbull/" target="_blank" rel="noopener noreferrer">ANAFIBJ ↗</a>
+              </div>
+            </div>
+
+            ${alertsHtml ? `<div class="ped-alerts">${alertsHtml}</div>` : ''}
+            <div class="ped-stage">${treeHtml}</div>
+
+            <div class="ped-footer">
+              <div class="ped-legend">
+                <span><i class="ped-swatch" style="background:#16606b"></i> Baba Hattı (Paternal)</span>
+                <span><i class="ped-swatch" style="background:#9e4739"></i> Ana Hattı (Maternal)</span>
+                <span><i class="ped-swatch" style="background:#b42318"></i> Taşıyıcı Ata (Risk)</span>
+                <span><i class="ped-swatch" style="background:#f59e0b"></i> Ortak Ata (Akrabalık)</span>
+              </div>
+              <div>Kaynak: <b>${esc(subject.pedigree?.source || 'NAAB AISS Ağustos 2026')}</b> · Herhangi bir ata kartına tıklayarak o atanın soy ağacına geçebilirsiniz.</div>
+            </div>
+          </div>`;
+      }
+
+      function renderPedigreeView() {
+        const host = document.getElementById('pedCertificateHost');
+        const select = document.getElementById('pedBullSelect');
+        const pillsEl = document.getElementById('pedQuickPills');
+        if (!host || !select || !pillsEl) return;
+
+        const withPed = state.bulls.filter((b) => Boolean(b.pedigree));
+        const withCommon = withPed.filter((b) => analyzePedigreeEntity(b).commonList.length > 0);
+        const withCarrierAnc = withPed.filter((b) => analyzePedigreeEntity(b).carrierAncestors.length > 0);
+
+        const qPills = [
+          { key: 'with-ped', label: `🌿 Pedigrili Boğalar (${withPed.length})` },
+          { key: 'common', label: `🔗 Ortak Atalı / Akrabalı (${withCommon.length})` },
+          { key: 'carrier-line', label: `⚠ Taşıyıcı Soy Hattı (${withCarrierAnc.length})` },
+          { key: 'all', label: `Tüm Boğalar (${state.bulls.length})` },
+        ];
+
+        pillsEl.innerHTML = qPills
+          .map(
+            (p) => `<button class="pill ${pedQuickFilter === p.key ? 'active' : ''}" data-action="ped-quick" data-key="${esc(p.key)}">${esc(p.label)}</button>`
+          )
+          .join('');
+
+        let pool =
+          pedQuickFilter === 'common' ? withCommon :
+          pedQuickFilter === 'carrier-line' ? withCarrierAnc :
+          pedQuickFilter === 'all' ? state.bulls : withPed;
+
+        const q = (document.getElementById('pedSearchInput')?.value || '').trim().toLocaleLowerCase('tr');
+        if (q) {
+          pool = pool.filter((b) =>
+            [b.name, b.ear, b.naab, b.breed, b.pedigree?.officialName].join(' ').toLocaleLowerCase('tr').includes(q)
+          );
+        }
+
+        if (!selectedAncestorId) {
+          if (!selectedPedUid || !pool.some((b) => b.uid === selectedPedUid)) {
+            selectedPedUid = pool[0]?.uid || withPed[0]?.uid || state.bulls[0]?.uid || '';
+          }
+        }
+
+        select.innerHTML = pool.length
+          ? pool
+              .slice(0, 350)
+              .map(
+                (b) => `<option value="${esc(b.uid)}">${esc(b.name)} (${esc(b.naab || b.ear)} · ${esc(b.breed)})${b.status === 'Taşıyıcı' ? ' [TAŞIYICI]' : ''}</option>`
+              )
+              .join('')
+          : '<option value="">Eşleşen boğa yok</option>';
+        if (pool.some((b) => b.uid === selectedPedUid)) {
+          select.value = selectedPedUid;
+        }
+
+        const backBtn = document.getElementById('pedBackBtn');
+        backBtn.style.display = pedHistory.length ? '' : 'none';
+
+        if (selectedAncestorId) {
+          const anc = getAncestor(selectedAncestorId);
+          if (anc) {
+            host.innerHTML = renderPedigreeCertificate(anc, true);
+            return;
+          }
+          selectedAncestorId = '';
+        }
+
+        const bull = findBull(selectedPedUid);
+        if (!bull) {
+          host.innerHTML = '<div class="panel pad" style="color:var(--muted)">Görüntülenecek boğa bulunamadı.</div>';
+          return;
+        }
+        host.innerHTML = renderPedigreeCertificate(bull, false);
+      }
+
+      function openPedigreeForBull(uid) {
+        selectedAncestorId = '';
+        pedHistory = [];
+        const b = findBull(uid);
+        if (!b) return;
+        selectedPedUid = b.uid;
+        if (!b.pedigree) {
+          pedQuickFilter = 'all';
+        } else if (pedQuickFilter !== 'with-ped' && pedQuickFilter !== 'all') {
+          pedQuickFilter = 'with-ped';
+        }
+        document.getElementById('pedSearchInput').value = '';
+        switchPage('pedigree');
+        renderPedigreeView();
+      }
+
+      function openDamEditor(uid) {
+        if (!canWrite()) return;
+        const b = findBull(uid);
+        if (!b) return;
+        const p = b.pedigree || { aissId: '', fullId: '', officialName: b.name, sireId: '', mgsId: '', damName: '', damId: '', source: 'Manuel giriş' };
+        const html = `
+          <div class="alert info">
+            <b>${esc(b.name)}</b> kaydı için harici ırk birliğinden (Holstein USA, CDCB, Lactanet, ANAFIBJ) doğruladığınız <b>Ana (Dam)</b> ve soy bilgilerini ekleyebilirsiniz.
+          </div>
+          <div class="form">
+            <div class="field full">
+              <label for="p_dam_name">Ana (Dam) Adı</label>
+              <input class="input" id="p_dam_name" value="${esc(p.damName || '')}" placeholder="örn. GENOSOURCE EXAMPLE-ET">
+            </div>
+            <div class="field">
+              <label for="p_dam_id">Ana (Dam) Kayıt / Küpe No</label>
+              <input class="input mono" id="p_dam_id" value="${esc(p.damId || '')}" placeholder="örn. 840003201234567">
+            </div>
+            <div class="field">
+              <label for="p_source">Pedigri Kaynağı</label>
+              <input class="input" id="p_source" value="${esc(p.source || 'NAAB AISS (Ağustos 2026)')}">
+            </div>
+            <div class="field">
+              <label for="p_sire_id">Baba (Sire) ID (AISS / ISO)</label>
+              <input class="input mono" id="p_sire_id" value="${esc(p.sireId || '')}" placeholder="örn. 840003219884299">
+            </div>
+            <div class="field">
+              <label for="p_mgs_id">Ana Babası (MGS) ID (AISS / ISO)</label>
+              <input class="input mono" id="p_mgs_id" value="${esc(p.mgsId || '')}" placeholder="örn. 840003147118734">
+            </div>
+          </div>`;
+
+        openModal('Ana (Dam) ve Pedigri Bilgilerini Düzenle', html, [
+          { label: 'Vazgeç', onClick: closeModal },
+          {
+            label: 'Kaydet',
+            cls: 'primary',
+            onClick: async () => {
+              b.pedigree = {
+                ...p,
+                damName: document.getElementById('p_dam_name').value.trim(),
+                damId: document.getElementById('p_dam_id').value.trim().toUpperCase(),
+                sireId: document.getElementById('p_sire_id').value.trim().toUpperCase(),
+                mgsId: document.getElementById('p_mgs_id').value.trim().toUpperCase(),
+                source: document.getElementById('p_source').value.trim() || 'Manuel doğrulama',
+              };
+              logAction('Pedigri güncellendi', `${b.name} (Ana: ${b.pedigree.damName || '—'})`);
+              if (await saveState()) {
+                closeModal();
+                toast('Pedigri bilgileri kaydedildi.');
+              }
+            },
+          },
+        ]);
       }
 
       function renderSources() {
@@ -1993,6 +2970,8 @@
             <div class="detail-box"><label>NAAB Kodu</label><div class="mono">${esc(b.naab || '—')}</div></div>
             <div class="detail-box"><label>Durum</label><div>${statusBadge(b.status)}</div></div>
             <div class="detail-box"><label>Doğrulanan Kusur</label><div>${esc(b.defect || '—')}</div></div>
+            <div class="detail-box"><label>Doğum · Kazein · TPI</label><div>${esc(formatDobTr(b.dob))} · β:${esc(b.betaCasein || '—')} · κ:${esc(b.kappaCasein || '—')}${b.tpi ? ` · TPI ${esc(b.tpi)}` : ''}</div></div>
+            <div class="detail-box"><label>İthalatçı · Ülke · Doz</label><div>${esc(b.importer || '—')}${b.country ? ` (${esc(b.country)})` : ''}${b.doses ? ` · ${Number(b.doses).toLocaleString('tr-TR')} doz` : ''}</div></div>
             <div class="detail-box"><label>Kaynak</label><div>${esc(b.source || '—')}</div></div>
             <div class="detail-box"><label>Kanıt Bağlantısı</label><div>${ev ? `<a href="${esc(ev)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">Kaynağı Aç ↗</a>` : '—'}</div></div>
           </div>
@@ -2002,6 +2981,7 @@
         `;
 
         const btns = [
+          { label: '🌿 Soy Ağacı (Pedigri)', onClick: () => { closeModal(); openPedigreeForBull(b.uid); } },
           { label: 'Kaynaklarda Sorgula', onClick: () => openBullQuery(b.uid) },
           ...(canWrite() ? [{ label: 'Düzenle', cls: 'primary', onClick: () => openBullForm(b.uid) }] : []),
           { label: 'Kapat', onClick: closeModal },
@@ -2608,6 +3588,7 @@
           const lines = text.split(/\r?\n/);
           const byNaab = new Map();
           const byReg = new Map();
+          const byIdMap = new Map();
           let totalAiss = 0;
 
           for (const line of lines) {
@@ -2616,24 +3597,43 @@
             if (c.length < 95) continue;
             totalAiss++;
             const breedCode = (c[0] || '').trim().toUpperCase();
-            const country = (c[1] || '').trim().toUpperCase();
+            const rawCountry = (c[1] || '').trim().toUpperCase();
+            const country = COUNTRY_TO_ISO3[rawCountry] || rawCountry;
             const regNum = (c[2] || '').trim().padStart(12, '0');
+            const cid = `${country}${regNum}`;
             const stud = parseInt((c[4] || '').trim(), 10) || 0;
             const pBreed = (c[5] || '').trim().toUpperCase();
             const pBull = parseInt((c[6] || '').trim(), 10) || 0;
             const fullNaab = (c[7] || '').replace(/\s+/g, '').toUpperCase();
+            const normAnc = (raw) => {
+              const s = String(raw || '').replace(/[\s-]/g, '').toUpperCase();
+              const m = s.match(/^(840|USA|US|124|CAN|CA|DEU|DE|NLD|NL|ITA|IT|DNK|DK|FRA|FR|GBR|GB|CZE|CZ)(\d+)$/);
+              return m ? `${COUNTRY_TO_ISO3[m[1]] || m[1]}${m[2].padStart(12, '0')}` : s;
+            };
+            const dobRaw = String(c[89] || '').replace(/\D/g, '');
+            const dob = dobRaw.length === 8 ? `${dobRaw.slice(0, 4)}-${dobRaw.slice(4, 6)}-${dobRaw.slice(6, 8)}` : '';
             const rec = {
+              id: cid,
               breedCode,
               country,
               regNum,
-              fullId: `${breedCode}${country}${regNum}`,
+              fullId: `${breedCode}${cid}`,
               naab: fullNaab,
               name: (c[8] || '').trim(),
+              dob,
+              sireId: normAnc(c[91]),
+              mgsId: normAnc(c[92]),
               recessives: (c[93] || '').trim(),
+              codes: (c[93] || '').trim(),
+              tpi: (c[62] || '').trim(),
+              nm: (c[44] || '').trim(),
+              beta: (c[125] || '').trim(),
+              kappa: (c[126] || '').trim(),
             };
             if (stud && pBreed && pBull) byNaab.set(`${stud}${pBreed}${pBull}`, rec);
             if (fullNaab) byNaab.set(fullNaab, rec);
             byReg.set(`${country}|${regNum}`, rec);
+            byIdMap.set(cid, rec);
           }
 
           const matches = [];
@@ -2674,6 +3674,7 @@
           }
 
           lastAissMatches = matches;
+          lastAissById = byIdMap;
           document.getElementById('aissResultsWrap').style.display = 'block';
           document.getElementById('aissSummaryCards').innerHTML = [
             ['AISS Kayıt Sayısı', totalAiss, ''],
@@ -2714,7 +3715,24 @@
 
       async function applyAissMatches() {
         if (!canWrite() || !lastAissMatches.length) return;
+        if (!state.pedigreeIndex) state.pedigreeIndex = {};
         let updated = 0;
+        const addAncestors = (startId, depth = 1) => {
+          if (!startId || depth > 4) return;
+          const rec = lastAissById.get(startId);
+          if (!rec) return;
+          if (!state.pedigreeIndex[startId]) {
+            state.pedigreeIndex[startId] = {
+              id: rec.id, fullId: rec.fullId, naab: rec.naab, name: rec.name,
+              breedCode: rec.breedCode, dob: rec.dob, codes: rec.codes,
+              tpi: rec.tpi, nm: rec.nm, beta: rec.beta, kappa: rec.kappa,
+              sireId: rec.sireId, mgsId: rec.mgsId,
+            };
+          }
+          if (rec.sireId) addAncestors(rec.sireId, depth + 1);
+          if (rec.mgsId) addAncestors(rec.mgsId, depth + 1);
+        };
+
         for (const { bull, hit, carriers } of lastAissMatches) {
           const url = `https://www.naab-css.org/genomic-bull-database/${hit.fullId}`;
           if (hit.recessives && !bull.codes.includes(hit.recessives)) {
@@ -2730,11 +3748,27 @@
             bull.status = 'Taşıyıcı';
             bull.defect = carriers.join(', ');
           }
+          bull.dob = hit.dob || bull.dob || '';
+          bull.betaCasein = hit.beta || bull.betaCasein || '';
+          bull.kappaCasein = hit.kappa || bull.kappaCasein || '';
+          bull.tpi = hit.tpi || bull.tpi || '';
+          bull.nm = hit.nm || bull.nm || '';
+          bull.pedigree = {
+            ...(bull.pedigree || {}),
+            aissId: hit.id,
+            fullId: hit.fullId,
+            officialName: hit.name,
+            sireId: hit.sireId,
+            mgsId: hit.mgsId,
+            source: 'NAAB AISS (Tarayıcı Taraması)',
+          };
+          addAncestors(hit.sireId, 1);
+          addAncestors(hit.mgsId, 1);
           updated++;
         }
-        logAction('AISS taraması uygulandı', `${updated} boğa kaydı AISS kodlarıyla güncellendi`);
+        logAction('AISS taraması uygulandı', `${updated} boğa kaydı AISS kodları ve pedigri bilgileriyle güncellendi`);
         if (await saveState()) {
-          toast(`${updated} kayıt AISS bulgularıyla güncellendi.`);
+          toast(`${updated} kayıt AISS kodları ve pedigri ağaçlarıyla güncellendi.`);
         }
       }
 
@@ -2773,6 +3807,16 @@
       });
       document.getElementById('dictSearch').addEventListener('input', renderDictionary);
       document.getElementById('auditSearch').addEventListener('input', renderAudit);
+      document.getElementById('pedSearchInput').addEventListener('input', () => {
+        selectedAncestorId = '';
+        renderPedigreeView();
+      });
+      document.getElementById('pedBullSelect').addEventListener('change', (e) => {
+        selectedAncestorId = '';
+        pedHistory = [];
+        selectedPedUid = e.target.value;
+        renderPedigreeView();
+      });
 
       document.getElementById('importFileInput').addEventListener('change', (e) => {
         const file = e.target.files[0];
@@ -2818,6 +3862,43 @@
             break;
           case 'detail-bull':
             openBullDetail(el.dataset.uid);
+            break;
+          case 'open-pedigree':
+            openPedigreeForBull(el.dataset.uid);
+            break;
+          case 'ped-quick':
+            pedQuickFilter = el.dataset.key || 'with-ped';
+            selectedAncestorId = '';
+            pedHistory = [];
+            renderPedigreeView();
+            break;
+          case 'ped-ancestor': {
+            const cid = el.dataset.cid;
+            if (cid && getAncestor(cid)) {
+              pedHistory.push(selectedAncestorId ? { type: 'anc', id: selectedAncestorId } : { type: 'bull', id: selectedPedUid });
+              selectedAncestorId = cid;
+              renderPedigreeView();
+            }
+            break;
+          }
+          case 'ped-back': {
+            const prev = pedHistory.pop();
+            if (prev) {
+              if (prev.type === 'anc') {
+                selectedAncestorId = prev.id;
+              } else {
+                selectedAncestorId = '';
+                selectedPedUid = prev.id;
+              }
+              renderPedigreeView();
+            }
+            break;
+          }
+          case 'ped-edit-dam':
+            openDamEditor(el.dataset.uid);
+            break;
+          case 'ped-print':
+            window.print();
             break;
           case 'edit-bull':
             openBullForm(el.dataset.uid);

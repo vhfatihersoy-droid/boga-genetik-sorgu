@@ -122,8 +122,22 @@ async function authenticate(request, env) {
   };
 }
 
-function sanitizeBull(b) {
+function sanitizePedigree(p) {
+  if (!p || typeof p !== 'object') return undefined;
   return {
+    aissId: String(p.aissId || '').trim().slice(0, 60),
+    fullId: String(p.fullId || '').trim().slice(0, 60),
+    officialName: String(p.officialName || '').trim().slice(0, 200),
+    sireId: String(p.sireId || '').trim().slice(0, 60),
+    mgsId: String(p.mgsId || '').trim().slice(0, 60),
+    damName: String(p.damName || '').trim().slice(0, 200),
+    damId: String(p.damId || '').trim().slice(0, 60),
+    source: String(p.source || '').trim().slice(0, 160),
+  };
+}
+
+function sanitizeBull(b) {
+  const out = {
     uid: String(b?.uid || '').trim().slice(0, 120),
     name: String(b?.name || '').trim().slice(0, 200),
     ear: String(b?.ear || '').trim().slice(0, 80),
@@ -138,7 +152,19 @@ function sanitizeBull(b) {
     source: String(b?.source || '').trim().slice(0, 200),
     evidence: String(b?.evidence || '').trim().slice(0, 1000),
     note: String(b?.note || '').trim().slice(0, 3000),
+    group: String(b?.group || '').trim().slice(0, 80),
+    country: String(b?.country || '').trim().slice(0, 80),
+    importer: String(b?.importer || '').trim().slice(0, 200),
+    doses: Number.isFinite(Number(b?.doses)) ? Math.max(0, Math.round(Number(b.doses))) : 0,
+    dob: String(b?.dob || '').trim().slice(0, 20),
+    betaCasein: String(b?.betaCasein || '').trim().slice(0, 20),
+    kappaCasein: String(b?.kappaCasein || '').trim().slice(0, 20),
+    tpi: String(b?.tpi || '').trim().slice(0, 20),
+    nm: String(b?.nm || '').trim().slice(0, 20),
   };
+  const ped = sanitizePedigree(b?.pedigree);
+  if (ped) out.pedigree = ped;
+  return out;
 }
 
 function sanitizeSource(s) {
@@ -153,8 +179,13 @@ function sanitizeSource(s) {
 }
 
 function cleanState(s) {
+  const pedIdx =
+    s?.pedigreeIndex && typeof s.pedigreeIndex === 'object' && !Array.isArray(s.pedigreeIndex)
+      ? s.pedigreeIndex
+      : {};
   return {
     bulls: Array.isArray(s?.bulls) ? s.bulls.map(sanitizeBull) : [],
+    pedigreeIndex: pedIdx,
     sources: Array.isArray(s?.sources) ? s.sources.map(sanitizeSource) : [],
     users: Array.isArray(s?.users) ? s.users : [],
     audit: Array.isArray(s?.audit) ? s.audit.slice(0, 2000) : [],
