@@ -1,0 +1,1 @@
+Site kaynak kodu, SQL şeması, başlangıç verileri ve çalışma dosyaları dahildir. Canlı veritabanı dökümü alınamadı. Yönetici oturumunda Tam yedek indir düğmesini kullanabilirsiniz.

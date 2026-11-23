@@ -1,0 +1,5 @@
+dist/
+.sites-runtime/
+.wrangler/
+.env*
+local_state.sqlite3

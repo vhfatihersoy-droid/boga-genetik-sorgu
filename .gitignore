@@ -1,0 +1,9 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+site/local_state.sqlite3
+site/dist/
+site/.sites-runtime/
+site/.wrangler/
+.env*
+node_modules/
