@@ -5,7 +5,18 @@ const breed={Holstein:['HO','RW'],'Kırmızı Holstein':['HO','RW'],Jersey:['JE'
 const country={US:'USA',USA:'USA',CA:'124',CAN:'124',DE:'DEU',NL:'NLD',IT:'ITA',DK:'DNK',FR:'FRA',GB:'GBR',CZ:'CZE'};
 const compact=x=>String(x||'').trim().toUpperCase().replace(/[\s().-]/g,'');
 const cleanNAAB=x=>{const m=compact(x).match(/^0*(\d{1,4})([A-Z]{2})0*(\d{1,6})$/);return m&&Number(m[1])&&Number(m[3])?Number(m[1])+m[2]+Number(m[3]):'';};
-const cleanReg=x=>{const m=compact(x).match(/^(?:HO|RW|JE|BS|AY|GU)?(840|124|[A-Z]{2,3})(?:M|F)?(\d{3,12})$/);return m?(country[m[1]]||m[1])+m[2].padStart(12,'0'):'';};
+const rawReg=(c,num)=>{
+ if(/^\d{1,12}$/.test(num))return (country[c]||c)+num.padStart(12,'0');
+ if(['AUS','BRA'].includes(c)&&/^(?=.*\d)(?=.*[A-Z])[A-Z0-9]{12}$/.test(num))return c+num;
+ return '';
+};
+const cleanReg=x=>{
+ const value=compact(x);
+ const alpha=value.match(/^(?:HO|RW|JE|BS|AY|GU)?(AUS|BRA)([A-Z0-9]{12})$/);
+ if(alpha)return rawReg(alpha[1],alpha[2]);
+ const m=value.match(/^(?:HO|RW|JE|BS|AY|GU)?(840|124|[A-Z]{2,3})(?:M|F)?(\d{3,12})$/);
+ return m?rawReg(m[1],m[2]):'';
+};
 export function latestURL(html){
  const hits=[...html.matchAll(/<a\b[^>]*href\s*=\s*["']([^"']+)["'][^>]*>\s*Complete List of All Active[^<]*<\/a>/gi)];
  if(hits.length!==1)throw Error('AISS resmi indirme bağlantısı bulunamadı.');
@@ -61,13 +72,15 @@ export function buildFeed(csv,bulls){
  for(const l of csv.split(/\r?\n/)){
   if(!l.trim())continue;lines++;
   const a=parseCSV(l);
-  if(a.length!==144||!/^[A-Z]{2}$/.test(a[0]?.trim())||!/^[0-9]{1,12}$/.test(a[2]?.trim())||!['A','F','G'].includes(a[94]?.trim()))continue;
-  const col=(i)=>a[i]?.trim()||'', cb=col(1),cid=(country[cb]||cb)+col(2).padStart(12,'0'),bc=col(0);
+  if(a.length!==144||!/^[A-Z]{2}$/.test(a[0]?.trim())||!['A','F','G'].includes(a[94]?.trim()))continue;
+  const col=(i)=>a[i]?.trim()||'', cb=col(1),cid=rawReg(cb,col(2)),bc=col(0);
+  if(!cid)continue;
   const vals=[bc+cid,cid,bc,col(7),col(8),isoDOB(col(89)),cleanReg(col(91)),cleanReg(col(92)),col(93),col(62),col(44),col(125),col(126)];
   const r=Object.fromEntries(fields.map((k,i)=>[k,vals[i]]));
   const altNAAB=col(4)+col(5)+col(6);
   if(r.name.length>200 || !/^(?:[0-9]{3}|[A-Z]{2,3})$/.test(cb)) continue;
-  catalog.push({...r,marketingCode:cleanNAAB(altNAAB)?altNAAB:'',evaluationType:col(94)});
+  catalog.push({...r,marketingCode:cleanNAAB(altNAAB)?altNAAB:'',shortName:col(90),evaluationType:col(94),
+    production:{ milk:col(18),fatLb:col(19),fatPercent:col(20),proteinLb:col(21),proteinPercent:col(22),reliability:col(16),daughters:col(13),herds:col(12) }});
   insert(byId,cid,r);insert(byFull,r.fullId,r);
   const keys=new Set([cleanNAAB(r.naab),cleanNAAB(col(4)+col(5)+col(6))]);for(const k of keys)insert(byCode,k,r);
   count++;
@@ -111,7 +124,7 @@ export async function readSnapshot(bucket){
 }
 export async function refreshSnapshot(bucket,bulls,request=fetch,now=new Date()){
  const old=await readSnapshot(bucket);
- if(Array.isArray(old?.catalog)&&now-Date.parse(old.checkedAt)<6*3600_000)return {result:'recent',release:old.release,matched:old.matched,checkedAt:old.checkedAt};
+ if(old?.schema===2&&Array.isArray(old.catalog)&&now-Date.parse(old.checkedAt)<6*3600_000)return {result:'recent',release:old.release,matched:old.matched,checkedAt:old.checkedAt};
  const opts={redirect:'manual',signal:AbortSignal.timeout(18000)};
  const page=await request(INDEX,opts);if(!page.ok||!page.body)throw Error('NAAB resmî dosya sayfası okunamadı.');
  const url=latestURL(new TextDecoder().decode(await bounded(page.body,600_000)));
@@ -119,7 +132,7 @@ export async function refreshSnapshot(bucket,bulls,request=fetch,now=new Date())
  const bytes=await bounded(file.body,10_000_000);
  const hash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(x=>x.toString(16).padStart(2,'0')).join('');
  let next;
- if(old?.sha256===hash&&Array.isArray(old.catalog))next={...old,checkedAt:now.toISOString()};
+ if(old?.schema===2&&old.sha256===hash&&Array.isArray(old.catalog))next={...old,checkedAt:now.toISOString()};
  else{
   const z=await readZip(bytes);
   if(z.release<(old?.release||BASE)||z.release>now.toISOString().slice(0,10))throw Error('NAAB sürüm tarihi kabul edilen aralık dışında.');
@@ -127,12 +140,14 @@ export async function refreshSnapshot(bucket,bulls,request=fetch,now=new Date())
   const liveIds=new Set(fresh.catalog.map(r=>r.fullId));
   const historic=(old?.catalog||[]).filter(r=>!liveIds.has(r.fullId)).map(r=>({...r,release:r.release||old.release}));
   if(fresh.catalog.length+historic.length>50_000)throw Error('Katalog kayıt sınırına ulaştı; önceki veri korundu.');
-  next={...fresh,catalog:[...fresh.catalog.map(r=>({...r,release:z.release})),...historic],release:z.release,file:z.name,source:url,sha256:hash,checkedAt:now.toISOString(),appliedAt:now.toISOString()};
+  next={...fresh,schema:2,catalog:[...fresh.catalog.map(r=>({...r,release:z.release})),...historic],release:z.release,file:z.name,source:url,sha256:hash,checkedAt:now.toISOString(),appliedAt:now.toISOString()};
+  // The private bucket retains the original publisher archive and field-layout document.
+  await bucket.put('aiss/raw/'+z.release+'-'+hash+'.zip',bytes,{httpMetadata:{contentType:'application/zip'}});
   // Keep exact historical snapshots separately; the active snapshot is replaced only after all validation.
   if(old?.file&&old.release<next.release&&Array.isArray(old.catalog)){
    await bucket.put('aiss/archive/'+old.release+'.json',JSON.stringify(old),{httpMetadata:{contentType:'application/json'}});
   }
  }
  await bucket.put('aiss/latest.json',JSON.stringify(next),{httpMetadata:{contentType:'application/json'}});
- return {result:old?.sha256===hash&&Array.isArray(old.catalog)?'unchanged':'updated',release:next.release,matched:next.matched,checkedAt:next.checkedAt};
+ return {result:old?.schema===2&&old.sha256===hash&&Array.isArray(old.catalog)?'unchanged':'updated',release:next.release,matched:next.matched,checkedAt:next.checkedAt};
 }

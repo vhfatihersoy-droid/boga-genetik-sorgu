@@ -66,7 +66,7 @@
     const q=f(phrase), code=id(q), words=q.split(' ').filter(Boolean), hasId=/\d/.test(q);
     return list.flatMap((row,i)=>{
       if(scope==='haygem'&&!row.permit||scope==='naab'&&row.sourceType!=='naab'||breed&&breed!==row.breed)return [];
-      const names=[row.name,row.pedigree?.officialName,...(row.authority?.variants||[]).map(v=>v.name)].map(f);
+      const names=[row.name,row.shortName,row.pedigree?.officialName,...(row.authority?.variants||[]).map(v=>v.name)].map(f);
       const ids=row.idKeys.map(id);
       const rank=!q?4:hasId&&ids.includes(code)?0:names.includes(q)?1:hasId&&code.length>=3&&ids.some(x=>x.startsWith(code))||names.some(x=>x.startsWith(q))?2:words.every(w=>names.some(n=>n.includes(w)))?3:9;
       return rank===9?[]:[{row,i,rank}];
@@ -114,6 +114,7 @@
       }).join('')||'<p>Bu aramayla eşleşen boğa bulunamadı.</p>';
       $('Pager').innerHTML=pages>1?'<button class="btn" type="button" data-catalog-step="-1" '+(current===1?'disabled':'')+'>Önceki</button><button class="btn" type="button" data-catalog-step="1" '+(current===pages?'disabled':'')+'>Sonraki</button>':'';
     }
+    function hide(){ $('Detail').hidden=true;$('Detail').replaceChildren(); }
     function show(i){
       const r=list[i];if(!r)return;selected=i;
       const matches=r.sourceType==='naab'?r.linked||[]:[];
@@ -137,6 +138,10 @@
       $('Detail').innerHTML=`<button type="button" class="btn sm" data-catalog-close>Kapat</button><h2 tabindex="-1">${esc(r.name)}</h2>
         <div class="cat-help">${source}</div><p class="cat-help"><b>${esc(permit)}</b> İzin kaydı fiilî ithalat veya sevkiyat kanıtı değildir.</p>
         <dl>${kv('Irk',r.breed)}${kv('Kayıt numarası',r.ear)}${kv('NAAB',r.naab||r.marketingCode)}${kv('Doğum',fmt(r.dob))}${kv('β-Kazein',r.beta||r.betaCasein)}${kv('κ-Kazein',r.kappa||r.kappaCasein)}${r.breedCode==='HO'?kv('TPI',r.tpi):''}${kv('Net Merit (NM$)',r.nm)}${r.authority?kv('Yayımlanan izin satırı',r.authority.lines?.join(', ')):''}</dl>
+        ${r.production?'<details><summary>NAAB üretim değerlendirmesi</summary><dl>'+
+          kv('Süt PTA (lb)',r.production.milk)+kv('Yağ PTA (lb)',r.production.fatLb)+kv('Yağ PTA (%)',r.production.fatPercent)+
+          kv('Protein PTA (lb)',r.production.proteinLb)+kv('Protein PTA (%)',r.production.proteinPercent)+
+          kv('Verim güvenilirliği (%)',r.production.reliability)+kv('Kız sayısı',r.production.daughters)+kv('Sürü sayısı',r.production.herds)+'</dl></details>':''}
         ${variantDetails}
         ${r.codes||r.defect?'<p class="cat-help"><b>Kaynakta bildirilen genetik kodlar:</b> '+esc([r.codes,r.defect].filter(Boolean).join(' · '))+'</p>':''}
         ${r.status&&r.sourceType!=='naab'?'<p class="cat-help"><b>Çalışma sınıflandırması:</b> '+esc(r.status)+'</p>':''}
@@ -150,7 +155,7 @@
     }
     host.addEventListener('click',e=>{
       const row=e.target.closest('[data-catalog-row]');if(row){show(+row.dataset.catalogRow);return;}
-      const close=e.target.closest('[data-catalog-close]');if(close){$('Detail').hidden=true;const old=$('Rows').querySelector('[data-catalog-row="'+selected+'"]');(old||$('Query')).focus();return;}
+      const close=e.target.closest('[data-catalog-close]');if(close){hide();const old=$('Rows').querySelector('[data-catalog-row="'+selected+'"]');(old||$('Query')).focus();return;}
       if(e.target.closest('[data-catalog-external]')&&list[selected]&&onOpenExternal){onOpenExternal(list[selected],parents);return;}
       const tree=e.target.closest('[data-catalog-open]');if(tree){onOpen(tree.dataset.catalogOpen);return;}
       const preview=e.target.closest('[data-catalog-preview]');if(preview){
@@ -162,8 +167,8 @@
       const step=e.target.closest('[data-catalog-step]');if(step){current+=+step.dataset.catalogStep;render();$('Rows').querySelector('button')?.focus();}
     });
     let timer;
-    $('Query').addEventListener('input',()=>{current=1;$('Detail').hidden=true;clearTimeout(timer);timer=setTimeout(render,100);});
-    for(const el of [$('Scope'),$('Breed')])el.addEventListener('change',()=>{current=1;$('Detail').hidden=true;render();});
+    $('Query').addEventListener('input',()=>{current=1;hide();clearTimeout(timer);timer=setTimeout(render,100);});
+    for(const el of [$('Scope'),$('Breed')])el.addEventListener('change',()=>{current=1;hide();render();});
     ingest();
     if(privateFeed)Promise.allSettled([getFeed('./api/catalog','rows'),getFeed('./api/haygem','rows')]).then(([n,h])=>{
       if(n.status==='fulfilled')feed=n.value;else failed=true;
