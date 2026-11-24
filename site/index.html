@@ -780,7 +780,29 @@
       .brand small { display: none; }
     }
 
+    .ped-tabs { display:flex; gap:5px; padding:4px; margin:0 0 12px; border:1px solid #dce6e4; border-radius:12px; background:#edf4f2; width:fit-content; max-width:100%; }
+    .ped-tabs button { font:inherit; font-size:13px; font-weight:700; color:#355956; background:none; border:1px solid transparent; padding:8px 13px; border-radius:8px; cursor:pointer; }
+    .ped-tabs button[aria-selected="true"] { color:#14453f; background:#fff; border-color:#d4e2df; box-shadow:0 1px 2px #12342e16; }
+    .ped-source { padding:clamp(14px,3vw,27px); display:grid; gap:14px; background:#f6faf9; }
+    .ped-source-lead { max-width:70ch; margin:0; color:#385655; line-height:1.55; }
+    .ped-source-card { min-width:0; border:1px solid #dce7e5; border-radius:12px; padding:clamp(12px,2vw,18px); background:white; }
+    .ped-source-card h3 { margin:4px 0 9px; font-size:16px; }
+    .ped-source-meta { display:flex; flex-wrap:wrap; gap:5px 9px; color:#385655; font-size:12px; overflow-wrap:anywhere; }
+    .ped-source-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+    .ped-source-actions .btn { min-height:40px; display:inline-flex; align-items:center; text-decoration:none; font-size:13px; }
+    .ped-source-preview { margin-top:12px; }
+    .ped-source-preview iframe { display:block; width:100%; height:clamp(320px,67vh,840px); border:1px solid #dce7e5; border-radius:8px; background:#f3f7f6; }
+    .ped-source-preview p { margin:7px 0 0; color:#385655; font-size:12px; }
+    #pedSourcePanel[hidden], #pedTreePanel[hidden] { display:none; }
+    .ped-tabs button:focus-visible, .ped-source-actions :focus-visible { outline:2px solid #186d61; outline-offset:2px; }
+    @media (max-width: 520px) {
+      .ped-tabs { display:grid; grid-template-columns:1fr 1fr; width:100%; }
+      .ped-source-actions .btn { flex-grow:1; justify-content:center; }
+    }
+
     @media print {
+      #pedTreePanel[hidden] { display:block !important; }
+      #pedSourcePanel, .ped-tabs { display:none !important; }
       @page { size: landscape; margin: 10mm; }
       body { background: #ffffff !important; }
       .topbar, .ped-picker-panel, .ped-print-hide, .toast, .modal { display: none !important; }
@@ -791,6 +813,7 @@
       .ped-stage { background: #ffffff !important; overflow: visible !important; padding: 14px !important; }
     }
   </style>
+  <link rel="stylesheet" href="./catalog.css">
 </head>
 <body>
   <div class="shell" id="appShell" style="display:none">
@@ -802,6 +825,7 @@
 
       <nav class="nav" id="topNav">
         <button class="active" data-page="search">Boğa Sorgula</button>
+        <button data-page="catalog">Boğa Kataloğu</button>
         <button data-page="pedigree">Soy Ağacı (Pedigri)</button>
         <button data-page="tools">Veri &amp; AISS</button>
         <button data-page="guide">İlkeler &amp; Kodlar</button>
@@ -874,6 +898,8 @@
       </section>
 
       <!-- 2. SOY AĞACI (RESMÎ PEDİGRİ) -->
+      <section class="page" id="page-catalog"></section>
+
       <section class="page" id="page-pedigree">
         <div class="panel ped-picker-panel">
           <div class="pad">
@@ -883,7 +909,7 @@
               <select id="pedBullSelect"></select>
               <div class="row">
                 <button class="btn sm" id="pedBackBtn" data-action="ped-back" style="display:none">← Önceki</button>
-                <button class="btn sm primary" data-action="ped-print">🖨 Yazdır / PDF</button>
+                <button class="btn sm primary" data-action="ped-print">🖨 Soy Ağacını Yazdır</button>
               </div>
             </div>
           </div>
@@ -1047,6 +1073,8 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
+  <script src="./pedigree-sources.js"></script>
+  <script src="./catalog.js"></script>
   <script>
     (() => {
       'use strict';
@@ -1139,6 +1167,8 @@
       let selectedAncestorId = '';
       let pedHistory = [];
       let pedQuickFilter = 'with-ped';
+      let pedAllowDirectSelection = false;
+      let pedPane = 'tree';
 
       const appShell = document.getElementById('appShell');
       const gate = document.createElement('div');
@@ -1391,7 +1421,14 @@
       // -----------------------------------------------------------------------
       // Sayfa & Render
       // -----------------------------------------------------------------------
+      let refreshCatalog;
       function switchPage(pageId) {
+        if(pageId==='catalog'){
+          if(!refreshCatalog)refreshCatalog=globalThis.BullCatalog?.mount(document.getElementById('page-catalog'),{
+            base:()=>state.bulls,onOpen:openPedigreeForBull
+          });
+          else refreshCatalog();
+        }
         document.querySelectorAll('#topNav button').forEach((b) => b.classList.toggle('active', b.dataset.page === pageId));
         document.querySelectorAll('.page').forEach((p) => p.classList.toggle('active', p.id === `page-${pageId}`));
       }
@@ -1509,7 +1546,7 @@
                   </td>
                   <td style="text-align:right;white-space:nowrap">
                     <button class="link-btn" data-action="detail-bull" data-uid="${esc(b.uid)}">İncele</button>
-                    ${b.pedigree ? `<button class="link-btn" data-action="open-pedigree" data-uid="${esc(b.uid)}">🌿 Pedigri</button>` : ''}
+                    ${(b.pedigree || globalThis.PedigreeSources?.find(b)) ? `<button class="link-btn" data-action="open-pedigree" data-uid="${esc(b.uid)}">🌿 Pedigri</button>` : ''}
                   </td>
                 </tr>`;
             }).join('')
@@ -1633,6 +1670,60 @@
             <div class="ped-sub">${esc(id || '—')}${naab ? ` · ${esc(naab)}` : ''}</div>
             ${genSummary ? `<div class="ped-gen-note">${genSummary}</div>` : ''}
           </div>`;
+      }
+
+      function renderPedigreeSourcePanel(entry) {
+        if (!entry) return `<div class="ped-source"><div class="ped-source-card">
+          <h3>Doğrulanmış kaynak belge bulunamadı</h3>
+          <p class="ped-source-lead">Bu boğa için kayıt numarası veya NAAB koduyla eşleştirilmiş bir yayın henüz yok. Benzer adlı hayvanların belgeleri gösterilmez.</p>
+        </div></div>`;
+        const identity = entry.registration + (entry.naab ? ` · ${entry.naab}` : '');
+        return `<div class="ped-source">
+          <p class="ped-source-lead">Pedigriyi yayımlayanın özgün belgesinden inceleyin. Eşleştirme hayvan kimliği düzeyindedir; sperma ürünü veya ithalat uygunluğu teyidi değildir.</p>
+          ${entry.docs.map((doc) => {
+            const preview = globalThis.PedigreeSources.previewUrl(doc);
+            return `<article class="ped-source-card">
+              <div class="ped-source-meta"><strong>${esc(doc.publisher)}</strong><span>${doc.type === 'pdf' ? 'PDF' : 'Kaynak sayfa'}</span></div>
+              <h3>${esc(doc.title)}</h3>
+              <div class="ped-source-meta">Eşleşen kimlik: <b class="mono">${esc(identity)}</b></div>
+              <div class="ped-source-actions">
+                ${preview ? `<button type="button" class="btn primary" data-action="ped-preview" data-url="${esc(preview)}" aria-expanded="false">PDF’yi burada göster</button>` : ''}
+                <a class="btn ${preview ? '' : 'primary'}" href="${esc(doc.url)}" target="_blank" rel="noopener noreferrer">Özgün ${doc.type === 'pdf' ? 'PDF’yi' : 'sayfayı'} aç ↗</a>
+              </div>
+              ${preview ? '<div class="ped-source-preview"></div>' : ''}
+            </article>`;
+          }).join('')}
+        </div>`;
+      }
+
+      function selectPedPane(pane, focus = false) {
+        pedPane = pane === 'source' ? 'source' : 'tree';
+        const host = document.getElementById('pedCertificateHost');
+        host.querySelectorAll('[role="tab"]').forEach((tab) => {
+          const active = tab.dataset.pane === pedPane;
+          tab.setAttribute('aria-selected', String(active));
+          tab.tabIndex = active ? 0 : -1;
+          document.getElementById(tab.getAttribute('aria-controls')).hidden = !active;
+          if (active && focus) tab.focus();
+        });
+        if (pedPane === 'tree') host.querySelectorAll('[data-action="ped-preview"][aria-expanded="true"]').forEach(togglePedPreview);
+      }
+
+      function togglePedPreview(button) {
+        const holder = button.closest('.ped-source-card')?.querySelector('.ped-source-preview');
+        if (!holder) return;
+        const open = button.getAttribute('aria-expanded') !== 'true';
+        holder.replaceChildren();
+        button.setAttribute('aria-expanded', String(open));
+        button.textContent = open ? 'Önizlemeyi kapat' : 'PDF’yi burada göster';
+        if (!open) return;
+        const frame = document.createElement('iframe');
+        frame.title = button.closest('.ped-source-card').querySelector('h3').textContent;
+        frame.referrerPolicy = 'no-referrer';
+        frame.src = button.dataset.url;
+        const help = document.createElement('p');
+        help.textContent = 'PDF burada görünmüyorsa yukarıdaki bağlantıyla özgün dosyayı açın.';
+        holder.append(frame, help);
       }
 
       function renderPedigreeCertificate(subject, isAncestorView = false) {
@@ -1781,7 +1872,12 @@
             </div>`
           : `<div class="alert warn" style="margin:0">Bu boğa için NAAB AISS soy ağacı kaydı bulunamadı. Harici kaynaklardan kontrol edip manuel ekleyebilirsiniz.</div>`;
 
+        const source = globalThis.PedigreeSources?.find(subject);
         return `
+          <div class="ped-tabs" role="tablist" aria-label="Pedigri görünümü">
+            <button type="button" id="pedTreeTab" role="tab" aria-controls="pedTreePanel" aria-selected="${pedPane === 'tree'}" tabindex="${pedPane === 'tree' ? 0 : -1}" data-action="ped-tab" data-pane="tree">Soy Ağacı</button>
+            <button type="button" id="pedSourceTab" role="tab" aria-controls="pedSourcePanel" aria-selected="${pedPane === 'source'}" tabindex="${pedPane === 'source' ? 0 : -1}" data-action="ped-tab" data-pane="source">Kaynak Belge${source ? ` (${source.docs.length})` : ''}</button>
+          </div>
           <div class="ped-cert">
             <div class="ped-head">
               <div>
@@ -1798,6 +1894,7 @@
               </div>
             </div>
 
+            <div id="pedTreePanel" role="tabpanel" aria-labelledby="pedTreeTab" tabindex="0" ${pedPane === 'tree' ? '' : 'hidden'}>
             ${alertsHtml ? `<div class="ped-alerts">${alertsHtml}</div>` : ''}
             <div class="ped-stage">${treeHtml}</div>
 
@@ -1814,6 +1911,8 @@
                 <a class="link-btn" href="https://lactanetgen.ca/" target="_blank" rel="noopener noreferrer">Lactanet ↗</a>
               </div>
             </div>
+            </div>
+            <div id="pedSourcePanel" role="tabpanel" aria-labelledby="pedSourceTab" tabindex="0" ${pedPane === 'source' ? '' : 'hidden'}>${renderPedigreeSourcePanel(source)}</div>
           </div>`;
       }
 
@@ -1835,12 +1934,14 @@
 
         let pool = pedQuickFilter === 'common' ? withCommon : pedQuickFilter === 'carrier-line' ? withCarrierAnc : withPed;
         const q = (document.getElementById('pedSearchInput')?.value || '').trim().toLocaleLowerCase('tr');
+        const direct = !q && pedAllowDirectSelection && findBull(selectedPedUid);
+        if (direct && !pool.some((b) => b.uid === direct.uid)) pool = [direct, ...pool];
         if (q) {
           pool = state.bulls.filter((b) => [b.name, b.ear, b.naab, b.pedigree?.officialName].join(' ').toLocaleLowerCase('tr').includes(q));
         }
 
         if (!selectedAncestorId && (!selectedPedUid || !pool.some((b) => b.uid === selectedPedUid))) {
-          selectedPedUid = pool[0]?.uid || withPed[0]?.uid || state.bulls[0]?.uid || '';
+          selectedPedUid = pool[0]?.uid || '';
         }
 
         select.innerHTML = pool.length
@@ -1865,6 +1966,8 @@
         const b = findBull(uid);
         if (!b) return;
         selectedPedUid = b.uid;
+        pedAllowDirectSelection = true;
+        pedPane = 'tree';
         pedQuickFilter = 'with-ped';
         document.getElementById('pedSearchInput').value = '';
         switchPage('pedigree');
@@ -2423,7 +2526,12 @@
         document.getElementById(id).addEventListener(id === 'qSearch' ? 'input' : 'change', () => { currentPage = 1; renderBulls(); });
       });
       document.getElementById('dictSearch').addEventListener('input', renderDictionary);
-      document.getElementById('pedSearchInput').addEventListener('input', () => { selectedAncestorId = ''; renderPedigreeView(); });
+      document.getElementById('pedSearchInput').addEventListener('input', () => { selectedAncestorId = ''; pedAllowDirectSelection = false; pedHistory = []; renderPedigreeView(); });
+      document.getElementById('pedCertificateHost').addEventListener('keydown', (e) => {
+        if (!e.target.matches('[role="tab"]') || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+        e.preventDefault();
+        selectPedPane(e.key === 'Home' ? 'tree' : e.key === 'End' ? 'source' : pedPane === 'tree' ? 'source' : 'tree', true);
+      });
       document.getElementById('pedBullSelect').addEventListener('change', (e) => { selectedAncestorId = ''; pedHistory = []; selectedPedUid = e.target.value; renderPedigreeView(); });
 
       document.getElementById('importFileInput').addEventListener('change', (e) => { if (e.target.files[0]) handleImportFile(e.target.files[0]); e.target.value = ''; });
@@ -2462,7 +2570,9 @@
           case 'new-bull': openBullForm(null); break;
           case 'detail-bull': openBullDetail(el.dataset.uid); break;
           case 'open-pedigree': openPedigreeForBull(el.dataset.uid); break;
-          case 'ped-quick': pedQuickFilter = el.dataset.key || 'with-ped'; selectedAncestorId = ''; pedHistory = []; renderPedigreeView(); break;
+          case 'ped-tab': selectPedPane(el.dataset.pane); break;
+          case 'ped-preview': togglePedPreview(el); break;
+          case 'ped-quick': pedAllowDirectSelection = false; pedQuickFilter = el.dataset.key || 'with-ped'; selectedAncestorId = ''; pedHistory = []; renderPedigreeView(); break;
           case 'ped-ancestor': {
             const cid = el.dataset.cid;
             if (cid && getAncestor(cid)) {

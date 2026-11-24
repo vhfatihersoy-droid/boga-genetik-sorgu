@@ -22,3 +22,7 @@ Tarayıcıda `http://127.0.0.1:8787` adresini açın.
 ```bash
 python3 calisma/build_report.py
 ```
+
+## Boğa Kataloğu ve özgün pedigri belgeleri
+
+Boğa Kataloğu ad, kayıt numarası ve NAAB ile arama sunar. Kaynak Belge sekmesi, yalnızca kimliği doğrulanan yayıncı sayfalarını ve desteklenen özgün PDF önizlemelerini gösterir. Resmî katalog dosyalarının kopyaları bu depoya veya GitHub Pages'e yüklenmez. Özel çalışma alanı için NAAB ve HAYGEM bağdaştırıcıları `catalog-sync/` altında bulunur.

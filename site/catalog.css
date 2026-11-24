@@ -1,0 +1,32 @@
+.catalog { max-width:1200px; margin:0 auto; color:#143735; }
+.cat-hero { border-radius:16px; margin:0 0 16px; padding:clamp(17px,3vw,29px); background:#143d3c; color:#fff; }
+.cat-hero small { color:#b8ded3; font-weight:750; letter-spacing:.05em; }
+.cat-hero h1 { font-size:clamp(24px,4vw,38px); margin:4px 0 8px; }
+.cat-hero p { margin:0; color:#e0efed; font-size:1rem; }
+.cat-shell { background:white; border:1px solid #d8e5e1; border-radius:15px; padding:clamp(12px,2vw,22px); }
+.cat-filters, .cat-meta, .cat-pager { display:flex; flex-wrap:wrap; gap:9px; align-items:end; }
+.cat-filters label { font-size:.875rem; font-weight:650; min-width:0; }
+.cat-filters label:first-child { flex:1 1 300px; }
+.cat-filters .input, .cat-filters select { display:block; width:100%; min-height:43px; margin-top:4px; }
+.cat-meta { font-size:.89rem; margin:12px 0; color:#46615d; }
+.cat-meta a, .cat-detail a { color:#10645b; }
+.cat-results { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,310px),1fr)); gap:9px; margin:12px 0; }
+.cat-results button { text-align:left; font:inherit; background:#f4f8f7; border:1px solid #d8e5e1; padding:12px; border-radius:10px; cursor:pointer; max-width:100%; color:#143735; overflow-wrap:anywhere; }
+.cat-results button:hover { border-color:#42847a; background:#e9f4f1; }
+.cat-results b, .cat-results span { display:block; }
+.cat-results span { color:#46615d; margin-top:6px; font-size:.88rem; }
+.cat-pager { justify-content:space-between; align-items:center; }
+.cat-detail { margin-top:15px; padding:clamp(13px,2vw,20px); background:#eff6f4; border:1px solid #bedbd4; border-radius:12px; overflow-wrap:anywhere; }
+.cat-detail h2 { margin:4px 0 8px; }
+.cat-detail h3 { margin:12px 0 6px; }
+.cat-detail dl { margin:12px 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr)); gap:8px; }
+.cat-detail dl div { border-radius:8px; background:white; border:1px solid #d8e5e1; padding:9px; }
+.cat-detail dt { color:#46615d; font-size:.85rem; }
+.cat-detail dd { font-weight:700; margin:2px 0 0; }
+.cat-detail button, .cat-detail a { margin:4px 5px 4px 0; }
+.cat-detail iframe { display:block; border:1px solid #bedbd4; width:100%; height:65vh; min-height:300px; border-radius:8px; }
+.cat-help { margin:7px 0; font-size:.9rem; line-height:1.45; }
+.catalog [hidden] { display:none !important; }
+.catalog :focus-visible { outline:2px solid #176c60; outline-offset:2px; }
+@media(max-width:550px){.cat-filters label{flex:1 1 135px}.cat-filters label:first-child{flex-basis:100%}.cat-pager .btn{min-height:42px}}
+@media print { .catalog { display:none !important; } }
